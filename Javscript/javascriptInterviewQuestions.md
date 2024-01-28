@@ -20,6 +20,62 @@
         <li>Date</li>
       </ul>
   </ul>  
+<li>Function Statement</li>
+
+```javascript
+ function a() {
+  console.log("Normal function is called Function Statement")
+ }
+``` 
+
+<li>Function Expression</li>
+
+```javascript
+const b = function () {
+  console.log("Function act like value is called function expression")
+ }
+``` 
+<li>Anonymous Function</li>
+
+```javascript
+function () {
+  console.log("Function wihtout name is called Anonymous function")
+ }
+``` 
+```
+output:
+Syntax Error: Funcion statement requires a function name
+```
+```
+Reason:
+We assign anonymous function to variable, so that it does not throw error
+Also in closure we can return anonymous function
+```
+<li>Named Function Expression</li>
+
+```javascript
+const b = function xyz() {
+  console.log("Function whole value is a name function")
+  console.log(xyz) // ll print function defination
+ }
+ b(); // valid
+ xyz() // invalid
+``` 
+```
+output:
+Reference Error: xyz is not defined
+```
+
+<li>Difference Between Arguments and Parameter</li>
+  <ul>
+  <li> Arguments: Values that are passed with function during its calling</li>
+  <li> b(1, 2):  1 and 2 are arguments for function b</li>
+  </ul>
+  <ul>
+  <li> Parameter: Values that are defined with function during its defination</li>
+  <li> function b(param1, param1){} : param1 & param2 are parameter</li>
+  </ul>
+
 <li>What is Depedency Injection ?</li>
   <ul><li> As name suggest it inject the depedency required in the function, Depedency injection allow framework to identify certain services that has been pre-configured in the code and inject it into other services</li></ul>
 <li>What is Execution Context?</li>
@@ -49,6 +105,60 @@
     <li>Lexical environment consist of the local memory along with its lexical enviornment of parent</li>
     <li>Inside execution context reference to the lexical enviornment of the parent execution context is present</li>
   </ul>
+  
+<li>Var, Let & Const</li>
+  <ul>
+    <li> var
+      <ul>
+        <li> var has global scope</li>
+        <li> if we try to access var variable before intitalization it will give undefined as the variable value</li>
+      </ul>
+    </li>
+    <li>Let
+      <ul>
+        <li> let has block scope</li>
+        <li> if we try to access let variable before intitalization it will give error</li>
+
+  ```
+  Uncaught ReferenceError: Cannot access 'a' before initialization
+  ```
+
+  <li>we can define let without any value</li>
+      
+  ```javascript
+  let a;
+  ```
+
+  </ul>
+  </li>
+  <li>Const
+  <ul>
+    <li>const has block scope </li>
+    <li> if we try to access const variable before intitalization it will give error</li>
+  
+  ```
+  Uncaught ReferenceError: Cannot access 'a' before initialization
+  ```
+  <li>we cannot define const variable without any value</li>
+  <li>if done program will not compile and throw error</li>
+      
+  ```javascript
+  const a;
+  ```
+  
+  ```
+  'const' declarations must be initialized.
+  ```
+  </li>
+  </ul>
+  </li>
+
+  <li>When we say that var has global scope and let and const has block scope, then that means in terms of memory as shown in image below
+  
+  ![Memory Image](./images/globalAndBlockScope.png)
+
+  </ul>
+
 <li>Scope Chain</li>
   <ul>
     <li> chain of execution context with its parent lexical enviornment </li>
@@ -72,7 +182,97 @@
   <ul>
     <li>Closure is a combination of a function and its lexical environment, which together form a closure.</li>
     <li>Because of closures, a function can access variables from its parent function even when it is executed in another scope.</li>
-    <li>Disadvantages of closure: over consumption of memory as for every function closure is formed.</li>
+    <li>Advantages of closures.<br> It is used in many places like 
+    <ul>
+    <li>Function Currying</li>
+    <li>Module Pattern</li>
+    <li>It also help in data hiding and encapsulation</li>
+
+  ```javascript
+  var count = 0
+  function counter {
+      return ++count
+  }
+  const incrementCounter = counter()
+  console.log(incrementCounter);
+  ```
+  ```
+  Issue: anyone in program can change the value of count
+  ```
+
+  To hide count access for whole program or say to encapsulate it, we can use closures
+  
+  ```javascript
+  function counter() {
+    var counter = 0
+    return function incrementCounter() {
+      return ++counter
+    }
+  }
+
+  const incrementCounter = counter()
+  console.log(incrementCounter());
+  ```  
+  
+  By this approach count is not accessible for outside program but the scope is limited till counter only and with the help of closures count is accessible inside incrementCounter
+
+  </ul>
+  <li> Closure function remembers its scope even after the execution</li>
+
+  ```javascript
+ function counter() {
+  var count = 0;
+  return function incrementCounter() {
+    ++count;
+    console.log('count: ', count);
+  };
+}
+
+const incrementCounter = counter();
+incrementCounter();
+incrementCounter();
+  ```  
+  Output:
+
+  ```
+  count:  1
+  count:  2
+  ```
+  Reason:
+  ```
+  after execution of 1st incrementCounter beacuse of closure it ll remember the increment value to 1
+  And during second execution of incrementCounter it will increase the value to 2
+  ```
+  
+  ```javascript
+ function counter() {
+  var count = 0;
+  return function incrementCounter() {
+    ++count;
+    console.log('count: ', count);
+  };
+}
+
+const incrementCounter1 = counter();
+incrementCounter1();
+incrementCounter1();
+const incrementCounter2 = counter();
+incrementCounter2();
+incrementCounter2();
+  ```  
+
+
+  ```
+  count:  1
+  count:  2
+   count:  1
+  count:  2
+  ```
+  Reason:
+  ```
+  incrementCounter1 and incrementCounter2 ll be two differnt closure
+  ```
+  <li>Disadvantages of closure: over consumption of memory as for every function closure is formed.</li>
   </ul>
   
   ```javascript
@@ -96,7 +296,8 @@
 
 <li>What is First class function?</li>
   <ul>
-    <li>The ability to pass function as value is called as First class function</li>
+    <li>The ability to use function as value and is called as First class function</li>
+    <li>In javscript we can pass function as a value or also return a funtion just like a value, so this is called first class funtion </li>
   </ul>
 
 <li>Explain Event Loop</li>
@@ -320,5 +521,20 @@ printWithBind() // we need to expliciltly call the new funtion
     </ol>
   </ul>
 
-[Check Full Detail Here](https://javascript.info/bubbling-and-capturing)
+  [Check Full Detail Here](https://javascript.info/bubbling-and-capturing)
+
+<li>Explain Undefined and not defined:</li>
+  <ul>
+    <li>Undefined: </li>
+    <ol>
+      <li>When we initialize the variable, javascript engine scans the whole program and allocate memory to all variable, it defines the variable with undefined value.</li>
+    </ol>
+  </ul>
+  <ul> 
+    <li>Not defined:</li>
+    <ol>
+      <li>Not defined is when javscript trys to find the defination of some variable/function and its not present in the program then it throws Reference error: variableName is not defined.</li>
+    </ol>
+  </ul>
+
 </ol>
